@@ -32,64 +32,9 @@ class PuntoVentaWindow(QMainWindow):
         self.carrito = {}
         self.contador_folios = 1
 
-        self.aplicar_estilos()
         self.configurar_tablas()
         self.conectar_eventos()
         self.cargar_productos()
-
-    def aplicar_estilos(self):
-        self.setStyleSheet("""
-            QMainWindow {
-                background-color: #F8F9FA;
-            }
-            QFrame#frameHeader, QFrame#frameCobro {
-                background-color: #FFFFFF;
-                border: 1px solid #DCDFE4;
-                border-radius: 8px;
-            }
-            QLineEdit {
-                background-color: #FFFFFF;
-                border: 1px solid #C8CDD5;
-                border-radius: 6px;
-                padding: 0 10px;
-                font-size: 13px;
-            }
-            QTableWidget {
-                background-color: #FFFFFF;
-                border: 1px solid #DCDFE4;
-                border-radius: 6px;
-                gridline-color: #ECEFF3;
-                font-size: 13px;
-            }
-            QHeaderView::section {
-                background-color: #F1F3F5;
-                padding: 8px;
-                border: none;
-                border-bottom: 1px solid #DCDFE4;
-                font-weight: bold;
-            }
-            QPushButton#btnBuscar, QPushButton#btnGenerarTicket {
-                background-color: #212529;
-                color: #FFFFFF;
-                border: none;
-                border-radius: 6px;
-                font-weight: bold;
-                font-size: 13px;
-            }
-            QPushButton#btnBuscar:hover, QPushButton#btnGenerarTicket:hover {
-                background-color: #343A40;
-            }
-            QPushButton#btnCancelar {
-                background-color: #FFFFFF;
-                color: #212529;
-                border: 1px solid #C8CDD5;
-                border-radius: 6px;
-                font-size: 13px;
-            }
-            QPushButton#btnCancelar:hover {
-                background-color: #F1F3F5;
-            }
-        """)
 
     def configurar_tablas(self):
         self.tblProductos.setColumnCount(5)
