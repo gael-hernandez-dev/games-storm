@@ -3,152 +3,164 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="Encuentra videojuegos, consolas y accesorios en GamesStorm.">
-    <title>GamesStorm | Tienda gamer</title>
+    <meta name="description" content="Catálogo de videojuegos, consolas y accesorios de GamesStorm.">
+    <title>Catálogo | GamesStorm</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Space+Grotesk:wght@500;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="estilosCatalogo.css">
-
+    <script src="Catalogo.js" defer></script>
 </head>
 <body>
-    <!-- Encabezado y navegación principal -->
-    <header class="site-header" id="inicio">
-        <nav class="navbar" aria-label="Navegación principal">
-            <a class="brand" href="#inicio" aria-label="GamesStorm, inicio">
-                <span class="brand-mark" aria-hidden="true">G</span>
-                <span>GAMES<span class="brand-accent">STORM</span></span>
+    <!-- Encabezado del catálogo, sin contenido de página principal -->
+    <header class="encabezado">
+        <nav class="navegacion" aria-label="Navegación del catálogo">
+            <a class="marca" href="Catalogo.html" aria-label="GamesStorm, catálogo">
+                <span class="marca-simbolo" aria-hidden="true">G</span>
+                <span>GAMES<span class="marca-acento">STORM</span></span>
             </a>
-            <div class="nav-links">
-                <a class="nav-link active" href="#productos">Tienda</a>
-                <a class="nav-link" href="#productos" data-nav-category="Juegos">Videojuegos</a>
-                <a class="nav-link" href="#productos" data-nav-category="Consolas">Consolas</a>
-                <a class="nav-link" href="#informacion">Nosotros</a>
-            </div>
-            <a class="nav-offer" href="#productos">Ofertas <span aria-hidden="true">↗</span></a>
+            <span class="navegacion-titulo">Catálogo de productos</span>
         </nav>
     </header>
 
-    
-
-    <!-- Área de catálogo con filtros y productos -->
-    <main class="store" id="productos">
-        <div class="section-heading">
+    <!-- Contenido central del catálogo y sus controles -->
+    <main class="catalogo" id="productos">
+        <div class="encabezado-catalogo">
             <div>
-                <p class="eyebrow">SELECCIÓN GAMESSTORM</p>
-                <h2>Encuentra tu siguiente <span>nivel</span></h2>
+                <p class="texto-etiqueta">GAMESSTORM · CATÁLOGO</p>
+                <h1>Encuentra tu siguiente <span>aventura</span></h1>
+                <p class="texto-descripcion">Videojuegos, consolas y accesorios para cada partida.</p>
             </div>
-            <p class="result-count" id="result-count" aria-live="polite"></p>
+            <p class="cantidad-resultados" id="cantidad-resultados" aria-live="polite"></p>
         </div>
 
-        <div class="catalog-layout">
-            <!-- Filtros de categoría -->
-            <aside class="filter-panel" aria-label="Filtros de productos">
-                <div class="filter-heading">
-                    <h3>Filtrar</h3>
-                    <span aria-hidden="true">☷</span>
-                </div>
-                <p class="filter-label">Categorías</p>
-                <div class="category-list" role="group" aria-label="Filtrar por categoría">
-                    <button class="category-button selected" type="button" data-category="Todos" aria-pressed="true">
-                        Todos <span class="category-arrow">→</span>
-                    </button>
-                    <button class="category-button" type="button" data-category="Juegos" aria-pressed="false">
-                        Videojuegos
-                    </button>
-                    <button class="category-button" type="button" data-category="Consolas" aria-pressed="false">
-                         Consolas
-                    </button>
-                    <button class="category-button" type="button" data-category="Accesorios" aria-pressed="false">
-                        Accesorios
-                    </button>
-                    <button class="category-button" type="button" data-category="Computadoras" aria-pressed="false">
-                         Computadoras
-                    </button>
-                </div>
-               
-            </aside>
+        <!-- Botón para desplegar el filtro desde el borde izquierdo -->
+        <button class="boton-lateral boton-filtros" id="abrir-filtros" type="button"
+                aria-controls="panel-filtros" aria-expanded="false">
+            <span aria-hidden="true">☷</span> Filtros
+        </button>
 
-            <!-- Búsqueda, orden y cuadrícula de productos -->
-            <section class="products-area" aria-label="Catálogo de productos">
-                <div class="catalog-tools">
-                    <label class="search-box">
-                        <span aria-hidden="true">⌕</span>
-                        <span class="visually-hidden">Buscar productos</span>
-                        <input id="search-input" type="search" placeholder="Busca juegos, consolas y más..." autocomplete="off">
-                        <kbd>Ctrl K</kbd>
-                    </label>
-                    <label class="sort-box">
-                        <span class="visually-hidden">Ordenar productos</span>
-                        <select id="sort-select">
-                            <option value="featured">Destacados</option>
-                            <option value="price-low">Precio: menor a mayor</option>
-                            <option value="price-high">Precio: mayor a menor</option>
-                            <option value="name">Nombre: A-Z</option>
-                        </select>
-                    </label>
-                </div>
-                <div class="product-grid" id="product-grid" aria-live="polite"></div>
-                <p class="empty-state" id="empty-state" hidden>No encontramos productos. Prueba otra búsqueda o categoría.</p>
-            </section>
-        </div>
+        <!-- Búsqueda, orden y tarjetas del catálogo -->
+        <section class="zona-productos" aria-label="Productos disponibles">
+            <div class="herramientas-catalogo">
+                <label class="campo-busqueda">
+                    <span aria-hidden="true">⌕</span>
+                    <span class="oculto-accesible">Buscar productos</span>
+                    <input id="campo-busqueda" type="search" placeholder="Busca juegos, consolas y más..."
+                           autocomplete="off">
+                    <kbd>Ctrl K</kbd>
+                </label>
+                <label class="campo-orden">
+                    <span class="oculto-accesible">Ordenar productos</span>
+                    <select id="selector-orden">
+                        <option value="destacados">Destacados</option>
+                        <option value="precio-menor">Precio: menor a mayor</option>
+                        <option value="precio-mayor">Precio: mayor a menor</option>
+                        <option value="nombre">Nombre: A-Z</option>
+                    </select>
+                </label>
+            </div>
+            <div class="cuadricula-productos" id="cuadricula-productos" aria-live="polite"></div>
+            <p class="mensaje-vacio" id="mensaje-vacio" hidden>
+                No encontramos productos. Prueba otra búsqueda o categoría.
+            </p>
+        </section>
     </main>
 
-    <!-- Fondo y panel lateral del carrito -->
-    <div class="drawer-backdrop" id="drawer-backdrop" hidden></div>
-    <aside class="cart-drawer" id="cart-drawer" aria-label="Carrito de compras" aria-hidden="true">
-        <div class="drawer-header">
+    <!-- Panel desplegable de filtros a la izquierda -->
+    <aside class="panel-lateral panel-filtros" id="panel-filtros" inert
+           aria-label="Filtros de productos" aria-hidden="true">
+        <div class="encabezado-panel">
             <div>
-                <p class="eyebrow">TU SELECCIÓN</p>
-                <h2>Mi carrito <span id="drawer-item-count">(0)</span></h2>
+                <p class="texto-etiqueta">PERSONALIZA TU BÚSQUEDA</p>
+                <h2>Filtrar productos</h2>
             </div>
-            <button class="icon-button" id="close-cart" type="button" aria-label="Cerrar carrito">×</button>
+            <button class="boton-cerrar" id="cerrar-filtros" type="button"
+                    aria-label="Cerrar filtros">×</button>
         </div>
-        <div class="cart-items" id="cart-items" aria-live="polite"></div>
-        <p class="cart-empty" id="cart-empty">Tu carrito está vacío.<br><span>¡Encuentra algo que te guste!</span></p>
-        <div class="drawer-footer">
-            <div class="cart-total">
-                <span>Total</span>
-                <strong id="cart-total">$0.00</strong>
-            </div>
-            <button class="button button-primary checkout-button" id="checkout-button" type="button" disabled>
-                Continuar compra <span aria-hidden="true">→</span>
-            </button>
-            <p class="secure-note"><span aria-hidden="true">✓</span> Compra de demostración segura</p>
+        <p class="etiqueta-filtro">Categorías</p>
+        <div class="lista-categorias" role="group" aria-label="Filtrar por categoría">
+            <button class="boton-categoria seleccionado" type="button"
+                    data-categoria="Todos" aria-pressed="true">Todos los productos</button>
+            <button class="boton-categoria" type="button"
+                    data-categoria="Videojuegos" aria-pressed="false">Videojuegos</button>
+            <button class="boton-categoria" type="button"
+                    data-categoria="Consolas" aria-pressed="false">Consolas</button>
+            <button class="boton-categoria" type="button"
+                    data-categoria="Accesorios" aria-pressed="false">Accesorios</button>
+            <button class="boton-categoria" type="button"
+                    data-categoria="Computadoras" aria-pressed="false">Computadoras</button>
+        </div>
+        <div class="nota-filtros">
+            <span aria-hidden="true">✦</span>
+            <p><strong>Juega sin límites</strong><br>Encuentra todo para tu equipo.</p>
         </div>
     </aside>
 
-    <!-- Pie de página con información de la tienda -->
-    <footer class="site-footer" id="informacion">
-        <div class="footer-main">
-            <div class="footer-brand">
-                <a class="brand" href="#inicio">
-                    <span class="brand-mark" aria-hidden="true">G</span>
-                    <span>GAMES<span class="brand-accent">STORM</span></span>
+    <!-- Botón y panel desplegable del carrito a la derecha -->
+    <button class="boton-lateral boton-carrito" id="abrir-carrito" type="button"
+            aria-controls="panel-carrito" aria-expanded="false">
+        <span aria-hidden="true">🛒</span> Carrito
+        <span class="contador-carrito" id="contador-carrito">0</span>
+    </button>
+
+    <aside class="panel-lateral panel-carrito" id="panel-carrito" inert
+           aria-label="Carrito de compras" aria-hidden="true">
+        <div class="encabezado-panel">
+            <div>
+                <p class="texto-etiqueta">TU SELECCIÓN</p>
+                <h2>Mi carrito <span id="cantidad-carrito">(0)</span></h2>
+            </div>
+            <button class="boton-cerrar" id="cerrar-carrito" type="button"
+                    aria-label="Cerrar carrito">×</button>
+        </div>
+        <div class="articulos-carrito" id="articulos-carrito" aria-live="polite"></div>
+        <p class="carrito-vacio" id="carrito-vacio">
+            Tu carrito está vacío.<br><span>¡Encuentra algo que te guste!</span>
+        </p>
+        <div class="pie-carrito">
+            <div class="total-carrito">
+                <span>Total</span>
+                <strong id="total-carrito">$0.00</strong>
+            </div>
+            <button class="boton boton-principal boton-pago" id="boton-pago" type="button" disabled>
+                Continuar compra <span aria-hidden="true">→</span>
+            </button>
+        </div>
+    </aside>
+
+    <!-- Fondo compartido para cerrar cualquiera de los paneles -->
+    <div class="fondo-panel" id="fondo-panel" hidden></div>
+
+    <!-- Información de contacto y enlaces del catálogo -->
+    <footer class="pie-pagina" id="informacion">
+        <div class="contenido-pie">
+            <div class="marca-pie">
+                <a class="marca" href="Catalogo.html">
+                    <span class="marca-simbolo" aria-hidden="true">G</span>
+                    <span>GAMES<span class="marca-acento">STORM</span></span>
                 </a>
-                <p>Tu espacio para jugar, explorar<br>y subir de nivel.</p>
+                <p>Tu tienda para videojuegos,<br>consolas y tecnología.</p>
             </div>
-            <div class="footer-column">
-                <h3>Explora</h3>
-                <a href="#productos">Tienda</a>
-                <a href="#productos" data-nav-category="Juegos">Videojuegos</a>
-                <a href="#productos" data-nav-category="Accesorios">Accesorios</a>
+            <div class="columna-pie">
+                <h2>Catálogo</h2>
+                <a href="#productos">Todos los productos</a>
             </div>
-            <div class="footer-column">
-                <h3>Ayuda</h3>
-                <a href="mailto:hola@gamesstorm.example">Contacto</a>
+            <div class="columna-pie">
+                <h2>Atención</h2>
+                <a href="">Contacto</a>
                 <a href="#informacion">Envíos y devoluciones</a>
                 <a href="#informacion">Preguntas frecuentes</a>
             </div>
-            <div class="footer-newsletter">
-                <h3>Únete a la comunidad</h3>
-                <p>Novedades y lanzamientos para tu próximo nivel.</p>
-                <a href="mailto:hola@gamesstorm.example">hola@gamesstorm.example</a>
+            <div class="columna-pie">
+                <h2>Contáctanos</h2>
+                <a href="">hola@gamesstorm.example</a>
+                <p>Atención: lunes a viernes, 9:00–20:00</p>
             </div>
         </div>
-        <div class="footer-bottom">
-            <span>© 2026 GamesStorm. Página de demostración.</span>
-            <span>Hecho para quienes juegan.</span>
+        <div class="pie-inferior">
+            <span>© 2026 GamesStorm · Catálogo de demostración</span>
+            <span>Precios expresados en pesos mexicanos (MXN)</span>
         </div>
     </footer>
 </body>
