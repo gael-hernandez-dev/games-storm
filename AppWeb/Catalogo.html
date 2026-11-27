@@ -1,0 +1,265 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Catálogo de videojuegos, consolas y accesorios de GamesStorm.">
+    <title>Catálogo | GamesStorm</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Space+Grotesk:wght@500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="estilosCatalogo.css">
+    <script src="Catalogo.js" defer></script>
+</head>
+<body>
+    <!-- Encabezado del catálogo, sin contenido de página principal -->
+    <header class="encabezado">
+        <nav class="navegacion" aria-label="Navegación del catálogo">
+            <a class="marca" href="Catalogo.html" aria-label="GamesStorm, catálogo">
+                <span class="marca-simbolo" aria-hidden="true">G</span>
+                <span>GAMES<span class="marca-acento">STORM</span></span>
+            </a>
+            <span class="navegacion-titulo">Catálogo de productos</span>
+        </nav>
+    </header>
+
+    <!-- Contenido central del catálogo y sus controles -->
+    <main class="catalogo" id="productos">
+        <div class="encabezado-catalogo">
+            <div>
+                <p class="texto-etiqueta">GAMESSTORM · CATÁLOGO</p>
+                <h1>Encuentra tu siguiente <span>aventura</span></h1>
+                <p class="texto-descripcion">Videojuegos, consolas y accesorios para cada partida.</p>
+            </div>
+            <p class="cantidad-resultados" id="cantidad-resultados" aria-live="polite"></p>
+        </div>
+
+        <!-- Botón para desplegar el filtro desde el borde izquierdo -->
+        <button class="boton-lateral boton-filtros" id="abrir-filtros" type="button"
+                aria-controls="panel-filtros" aria-expanded="false">
+            <span aria-hidden="true">☷</span> Filtros
+        </button>
+
+        <!-- Búsqueda, orden y tarjetas del catálogo -->
+        <section class="zona-productos" aria-label="Productos disponibles">
+            <div class="herramientas-catalogo">
+                <label class="campo-busqueda">
+                    <span aria-hidden="true">⌕</span>
+                    <span class="oculto-accesible">Buscar productos</span>
+                    <input id="campo-busqueda" type="search" placeholder="Busca juegos, consolas y más..."
+                           autocomplete="off">
+                    <kbd>Ctrl K</kbd>
+                </label>
+                <label class="campo-orden">
+                    <span class="oculto-accesible">Ordenar productos</span>
+                    <select id="selector-orden">
+                        <option value="destacados">Destacados</option>
+                        <option value="precio-menor">Precio: menor a mayor</option>
+                        <option value="precio-mayor">Precio: mayor a menor</option>
+                        <option value="nombre">Nombre: A-Z</option>
+                    </select>
+                </label>
+            </div>
+            <div class="cuadricula-productos" id="cuadricula-productos" aria-live="polite"></div>
+            <p class="mensaje-vacio" id="mensaje-vacio" hidden>
+                No encontramos productos. Prueba otra búsqueda o categoría.
+            </p>
+        </section>
+    </main>
+
+    <!-- Panel desplegable de filtros a la izquierda -->
+    <aside class="panel-lateral panel-filtros" id="panel-filtros" inert
+           aria-label="Filtros de productos" aria-hidden="true">
+        <div class="encabezado-panel">
+            <div>
+                <p class="texto-etiqueta">PERSONALIZA TU BÚSQUEDA</p>
+                <h2>Filtrar productos</h2>
+            </div>
+            <button class="boton-cerrar" id="cerrar-filtros" type="button"
+                    aria-label="Cerrar filtros">×</button>
+        </div>
+        <p class="etiqueta-filtro">Categorías</p>
+        <div class="lista-categorias" role="group" aria-label="Filtrar por categoría">
+            <button class="boton-categoria seleccionado" type="button"
+                    data-categoria="Todos" aria-pressed="true">Todos los productos</button>
+            <button class="boton-categoria" type="button"
+                    data-categoria="Videojuegos" aria-pressed="false">Videojuegos</button>
+            <button class="boton-categoria" type="button"
+                    data-categoria="Consolas" aria-pressed="false">Consolas</button>
+            <button class="boton-categoria" type="button"
+                    data-categoria="Accesorios" aria-pressed="false">Accesorios</button>
+            <button class="boton-categoria" type="button"
+                    data-categoria="Computadoras" aria-pressed="false">Computadoras</button>
+        </div>
+        <div class="nota-filtros">
+            <span aria-hidden="true">✦</span>
+            <p><strong>Juega sin límites</strong><br>Encuentra todo para tu equipo.</p>
+        </div>
+    </aside>
+
+    <!-- Botón y panel desplegable del carrito a la derecha -->
+    <button class="boton-lateral boton-carrito" id="abrir-carrito" type="button"
+            aria-controls="panel-carrito" aria-expanded="false">
+        <span aria-hidden="true">🛒</span> Carrito
+        <span class="contador-carrito" id="contador-carrito">0</span>
+    </button>
+
+    <aside class="panel-lateral panel-carrito" id="panel-carrito" inert
+           aria-label="Carrito de compras" aria-hidden="true">
+        <div class="encabezado-panel">
+            <div>
+                <p class="texto-etiqueta">TU SELECCIÓN</p>
+                <h2>Mi carrito <span id="cantidad-carrito">(0)</span></h2>
+            </div>
+            <button class="boton-cerrar" id="cerrar-carrito" type="button"
+                    aria-label="Cerrar carrito">×</button>
+        </div>
+        <div class="articulos-carrito" id="articulos-carrito" aria-live="polite"></div>
+        <p class="carrito-vacio" id="carrito-vacio">
+            Tu carrito está vacío.<br><span>¡Encuentra algo que te guste!</span>
+        </p>
+        <div class="pie-carrito">
+            <div class="total-carrito">
+                <span>Total</span>
+                <strong id="total-carrito">$0.00</strong>
+            </div>
+            <button class="boton boton-principal boton-pago" id="boton-pago" type="button" disabled>
+                Continuar compra <span aria-hidden="true">→</span>
+            </button>
+        </div>
+    </aside>
+
+    <!-- Ventana emergente para confirmar los datos y simular el pago -->
+    <dialog class="modal-pago" id="modal-pago" aria-labelledby="titulo-pago">
+        <div class="encabezado-modal">
+            <div>
+                <p class="texto-etiqueta">PAGO SEGURO · DEMOSTRACIÓN</p>
+                <h2 id="titulo-pago">Finaliza tu compra</h2>
+            </div>
+            <button class="boton-cerrar" id="cerrar-pago" type="button"
+                    aria-label="Cerrar pago">×</button>
+        </div>
+        <div class="contenido-modal">
+            <section class="resumen-pago" aria-labelledby="titulo-resumen-pago">
+                <div class="encabezado-resumen">
+                    <h3 id="titulo-resumen-pago">Resumen de compra</h3>
+                    <span id="cantidad-resumen"></span>
+                </div>
+                <div class="lineas-resumen" id="lineas-resumen" aria-live="polite"></div>
+                <dl class="totales-resumen">
+                    <div><dt>Subtotal</dt><dd id="subtotal-pago"></dd></div>
+                    <div><dt>Envío</dt><dd id="envio-pago"></dd></div>
+                    <div class="total-final"><dt>Total</dt><dd id="total-pago"></dd></div>
+                </dl>
+                <p class="nota-envio">Envío gratis dentro de México. Otros destinos tienen una tarifa fija de $199.00 MXN.</p>
+            </section>
+
+            <form class="formulario-pago" id="formulario-pago">
+                <section class="grupo-pago" aria-labelledby="titulo-envio">
+                    <h3 id="titulo-envio">Datos de usuario y envío</h3>
+                    <label class="campo-pago" for="nombre-cliente">
+                        Nombre completo
+                        <input id="nombre-cliente" name="nombre" type="text"
+                               autocomplete="name" required>
+                    </label>
+                    <label class="campo-pago" for="correo-cliente">
+                        Correo electrónico
+                        <input id="correo-cliente" name="correo" type="email"
+                               autocomplete="email" required>
+                    </label>
+                    <label class="campo-pago" for="direccion-cliente">
+                        Dirección de envío
+                        <input id="direccion-cliente" name="direccion" type="text"
+                               autocomplete="street-address" required>
+                    </label>
+                    <label class="campo-pago" for="pais-cliente">
+                        País
+                        <select id="pais-cliente" name="pais">
+                            <option value="mexico">México</option>
+                            <option value="otro">Otro país</option>
+                        </select>
+                    </label>
+                </section>
+
+                <section class="grupo-pago" aria-labelledby="titulo-tarjeta">
+                    <h3 id="titulo-tarjeta">Pago con tarjeta</h3>
+                    <p class="aviso-demostracion">Simulación únicamente: no se realizará ningún cargo ni se guardarán los datos de tu tarjeta.</p>
+                    <label class="campo-pago" for="titular-tarjeta">
+                        Titular de la tarjeta
+                        <input id="titular-tarjeta" name="titular" type="text"
+                               autocomplete="cc-name" required>
+                    </label>
+                    <label class="campo-pago" for="numero-tarjeta">
+                        Número de tarjeta
+                        <input id="numero-tarjeta" name="numero-tarjeta" type="text"
+                               inputmode="numeric" autocomplete="cc-number"
+                               pattern="[0-9 ]{13,23}" maxlength="23"
+                               title="Ingresa de 13 a 19 dígitos, con espacios opcionales." required>
+                    </label>
+                    <div class="campos-tarjeta">
+                        <label class="campo-pago" for="vencimiento-tarjeta">
+                            Vencimiento (MM/AA)
+                            <input id="vencimiento-tarjeta" name="vencimiento" type="text"
+                                   inputmode="numeric" autocomplete="cc-exp"
+                                   placeholder="MM/AA" pattern="(0[1-9]|1[0-2])/[0-9]{2}"
+                                   maxlength="5" required>
+                        </label>
+                        <label class="campo-pago" for="codigo-tarjeta">
+                            CVV
+                            <input id="codigo-tarjeta" name="codigo" type="password"
+                                   inputmode="numeric" autocomplete="cc-csc"
+                                   pattern="[0-9]{3,4}" maxlength="4" required>
+                        </label>
+                    </div>
+                </section>
+
+                <label class="aceptar-terminos" for="aceptar-terminos">
+                    <input id="aceptar-terminos" name="terminos" type="checkbox" required>
+                    <span>Acepto los términos y condiciones de esta compra de demostración.</span>
+                </label>
+                <div class="acciones-pago">
+                    <button class="boton boton-secundario" id="cancelar-pago" type="button">Cancelar</button>
+                    <button class="boton boton-principal" type="submit">
+                        Pagar <span id="boton-total-pago"></span>
+                    </button>
+                </div>
+            </form>
+        </div>
+    </dialog>
+
+    <!-- Fondo compartido para cerrar cualquiera de los paneles -->
+    <div class="fondo-panel" id="fondo-panel" hidden></div>
+
+    <!-- Información de contacto y enlaces del catálogo -->
+    <footer class="pie-pagina" id="informacion">
+        <div class="contenido-pie">
+            <div class="marca-pie">
+                <a class="marca" href="Catalogo.html">
+                    <span class="marca-simbolo" aria-hidden="true">G</span>
+                    <span>GAMES<span class="marca-acento">STORM</span></span>
+                </a>
+                <p>Tu tienda para videojuegos,<br>consolas y tecnología.</p>
+            </div>
+            <div class="columna-pie">
+                <h2>Catálogo</h2>
+                <a href="#productos">Todos los productos</a>
+            </div>
+            <div class="columna-pie">
+                <h2>Atención</h2>
+                <a href="">Contacto</a>
+                <a href="#informacion">Envíos y devoluciones</a>
+                <a href="#informacion">Preguntas frecuentes</a>
+            </div>
+            <div class="columna-pie">
+                <h2>Contáctanos</h2>
+                <a href="">hola@gamesstorm.example</a>
+                <p>Atención: lunes a viernes, 9:00–20:00</p>
+            </div>
+        </div>
+        <div class="pie-inferior">
+            <span>© 2026 GamesStorm · Catálogo de demostración</span>
+            <span>Precios expresados en pesos mexicanos (MXN)</span>
+        </div>
+    </footer>
+</body>
+</html>
