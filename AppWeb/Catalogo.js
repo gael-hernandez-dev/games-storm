@@ -44,6 +44,10 @@ const contadorCarrito = document.getElementById("contador-carrito");
 const cantidadCarrito = document.getElementById("cantidad-carrito");
 const totalCarrito = document.getElementById("total-carrito");
 const botonPago = document.getElementById("boton-pago");
+const modalPago = document.getElementById("modal-pago");
+const formularioPago = document.getElementById("formulario-pago");
+const paisCliente = document.getElementById("pais-cliente");
+const numeroTarjeta = document.getElementById("numero-tarjeta");
 
 // Presenta todos los importes como moneda mexicana.
 const formateadorMoneda = new Intl.NumberFormat("es-MX", {
@@ -204,6 +208,51 @@ function dibujarCarrito() {
     }).join("");
 }
 
+// Actualiza el resumen y el costo de envío según el destino seleccionado.
+function dibujarResumenPago() {
+    const subtotal = estado.carrito.reduce((total, articulo) => {
+        const producto = productos.find(
+            (elemento) => elemento.identificador === articulo.identificador
+        );
+        return total + producto.precio * articulo.cantidad;
+    }, 0);
+    const costoEnvio = paisCliente.value === "mexico" ? 0 : 199;
+    const total = subtotal + costoEnvio;
+    const totalArticulos = estado.carrito.reduce(
+        (cantidad, articulo) => cantidad + articulo.cantidad, 0);
+
+    document.getElementById("cantidad-resumen").textContent =
+        `${totalArticulos} ${totalArticulos === 1 ? "artículo" : "artículos"}`;
+    document.getElementById("lineas-resumen").innerHTML = estado.carrito.map((articulo) => {
+        const producto = productos.find(
+            (elemento) => elemento.identificador === articulo.identificador
+        );
+
+        return `
+            <div class="linea-resumen">
+                <span class="icono-resumen ${producto.color}" aria-hidden="true">${producto.icono}</span>
+                <div>
+                    <h4>${producto.nombre}</h4>
+                    <p>Cantidad: ${articulo.cantidad}</p>
+                </div>
+                <strong>${formateadorMoneda.format(producto.precio * articulo.cantidad)}</strong>
+            </div>`;
+    }).join("");
+
+    document.getElementById("subtotal-pago").textContent = formateadorMoneda.format(subtotal);
+    document.getElementById("envio-pago").textContent = costoEnvio === 0
+        ? "Gratis"
+        : formateadorMoneda.format(costoEnvio);
+    document.getElementById("total-pago").textContent = formateadorMoneda.format(total);
+    document.getElementById("boton-total-pago").textContent = formateadorMoneda.format(total);
+}
+
+// Borra los datos ingresados para no conservar información de pago en el formulario.
+function limpiarFormularioPago() {
+    formularioPago.reset();
+    numeroTarjeta.setCustomValidity("");
+}
+
 // Despliega el panel adecuado
 function abrirPanel(tipoPanel) {
     // Garantiza que solo un panel esté abierto a la vez
@@ -315,6 +364,12 @@ function inicializarCatalogo() {
 
     document.addEventListener("keydown", (evento) => {
         // Escape cierra paneles y Ctrl + K lleva el cursor al campo de búsqueda
+        if (evento.key === "Escape" && modalPago.open) {
+            limpiarFormularioPago();
+            modalPago.close();
+            return;
+        }
+
         if (evento.key === "Escape" && estado.panelAbierto) {
             cerrarPanel();
         }
@@ -330,10 +385,40 @@ function inicializarCatalogo() {
             return;
         }
 
-        window.alert("¡Gracias! Tu compra de demostración se completó.");
+        dibujarResumenPago();
+        modalPago.showModal();
+        document.getElementById("nombre-cliente").focus();
+    });
+
+    paisCliente.addEventListener("change", dibujarResumenPago);
+    modalPago.addEventListener("cancel", limpiarFormularioPago);
+    numeroTarjeta.addEventListener("input", () => {
+        const cantidadDigitos = numeroTarjeta.value.replace(/\D/g, "").length;
+        numeroTarjeta.setCustomValidity(
+            cantidadDigitos >= 13 && cantidadDigitos <= 19
+                ? ""
+                : "Ingresa de 13 a 19 dígitos."
+        );
+    });
+    document.getElementById("cerrar-pago").addEventListener("click", () => {
+        limpiarFormularioPago();
+        modalPago.close();
+    });
+    document.getElementById("cancelar-pago").addEventListener("click", () => {
+        limpiarFormularioPago();
+        modalPago.close();
+    });
+
+    formularioPago.addEventListener("submit", (evento) => {
+        evento.preventDefault();
+        window.alert("¡Gracias! El pago de demostración se completó correctamente.");
         estado.carrito = [];
         dibujarCarrito();
-        cerrarPanel();
+        limpiarFormularioPago();
+        modalPago.close();
+        if (estado.panelAbierto) {
+            cerrarPanel();
+        }
     });
 
     dibujarCatalogo();
