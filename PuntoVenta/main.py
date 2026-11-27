@@ -199,9 +199,9 @@ class PuntoVentaWindow(QMainWindow):
         self.cargar_productos()
         self.actualizar_carrito()
 
-
 if __name__ == "__main__":
     app = QApplication(sys.argv)
+    app.styleHints().setColorScheme(Qt.ColorScheme.Light)
     ventana = PuntoVentaWindow()
     ventana.show()
     sys.exit(app.exec())

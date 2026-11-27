@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Encuentra videojuegos, consolas y accesorios en GamesStorm.">
+    <title>GamesStorm | Tienda gamer</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Space+Grotesk:wght@500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="estilosCatalogo.css">
+
+</head>
+<body>
+    <!-- Encabezado y navegación principal -->
+    <header class="site-header" id="inicio">
+        <nav class="navbar" aria-label="Navegación principal">
+            <a class="brand" href="#inicio" aria-label="GamesStorm, inicio">
+                <span class="brand-mark" aria-hidden="true">G</span>
+                <span>GAMES<span class="brand-accent">STORM</span></span>
+            </a>
+            <div class="nav-links">
+                <a class="nav-link active" href="#productos">Tienda</a>
+                <a class="nav-link" href="#productos" data-nav-category="Juegos">Videojuegos</a>
+                <a class="nav-link" href="#productos" data-nav-category="Consolas">Consolas</a>
+                <a class="nav-link" href="#informacion">Nosotros</a>
+            </div>
+            <a class="nav-offer" href="#productos">Ofertas <span aria-hidden="true">↗</span></a>
+        </nav>
+    </header>
+
+    
+
+    <!-- Área de catálogo con filtros y productos -->
+    <main class="store" id="productos">
+        <div class="section-heading">
+            <div>
+                <p class="eyebrow">SELECCIÓN GAMESSTORM</p>
+                <h2>Encuentra tu siguiente <span>nivel</span></h2>
+            </div>
+            <p class="result-count" id="result-count" aria-live="polite"></p>
+        </div>
+
+        <div class="catalog-layout">
+            <!-- Filtros de categoría -->
+            <aside class="filter-panel" aria-label="Filtros de productos">
+                <div class="filter-heading">
+                    <h3>Filtrar</h3>
+                    <span aria-hidden="true">☷</span>
+                </div>
+                <p class="filter-label">Categorías</p>
+                <div class="category-list" role="group" aria-label="Filtrar por categoría">
+                    <button class="category-button selected" type="button" data-category="Todos" aria-pressed="true">
+                        Todos <span class="category-arrow">→</span>
+                    </button>
+                    <button class="category-button" type="button" data-category="Juegos" aria-pressed="false">
+                        Videojuegos
+                    </button>
+                    <button class="category-button" type="button" data-category="Consolas" aria-pressed="false">
+                         Consolas
+                    </button>
+                    <button class="category-button" type="button" data-category="Accesorios" aria-pressed="false">
+                        Accesorios
+                    </button>
+                    <button class="category-button" type="button" data-category="Computadoras" aria-pressed="false">
+                         Computadoras
+                    </button>
+                </div>
+               
+            </aside>
+
+            <!-- Búsqueda, orden y cuadrícula de productos -->
+            <section class="products-area" aria-label="Catálogo de productos">
+                <div class="catalog-tools">
+                    <label class="search-box">
+                        <span aria-hidden="true">⌕</span>
+                        <span class="visually-hidden">Buscar productos</span>
+                        <input id="search-input" type="search" placeholder="Busca juegos, consolas y más..." autocomplete="off">
+                        <kbd>Ctrl K</kbd>
+                    </label>
+                    <label class="sort-box">
+                        <span class="visually-hidden">Ordenar productos</span>
+                        <select id="sort-select">
+                            <option value="featured">Destacados</option>
+                            <option value="price-low">Precio: menor a mayor</option>
+                            <option value="price-high">Precio: mayor a menor</option>
+                            <option value="name">Nombre: A-Z</option>
+                        </select>
+                    </label>
+                </div>
+                <div class="product-grid" id="product-grid" aria-live="polite"></div>
+                <p class="empty-state" id="empty-state" hidden>No encontramos productos. Prueba otra búsqueda o categoría.</p>
+            </section>
+        </div>
+    </main>
+
+    <!-- Fondo y panel lateral del carrito -->
+    <div class="drawer-backdrop" id="drawer-backdrop" hidden></div>
+    <aside class="cart-drawer" id="cart-drawer" aria-label="Carrito de compras" aria-hidden="true">
+        <div class="drawer-header">
+            <div>
+                <p class="eyebrow">TU SELECCIÓN</p>
+                <h2>Mi carrito <span id="drawer-item-count">(0)</span></h2>
+            </div>
+            <button class="icon-button" id="close-cart" type="button" aria-label="Cerrar carrito">×</button>
+        </div>
+        <div class="cart-items" id="cart-items" aria-live="polite"></div>
+        <p class="cart-empty" id="cart-empty">Tu carrito está vacío.<br><span>¡Encuentra algo que te guste!</span></p>
+        <div class="drawer-footer">
+            <div class="cart-total">
+                <span>Total</span>
+                <strong id="cart-total">$0.00</strong>
+            </div>
+            <button class="button button-primary checkout-button" id="checkout-button" type="button" disabled>
+                Continuar compra <span aria-hidden="true">→</span>
+            </button>
+            <p class="secure-note"><span aria-hidden="true">✓</span> Compra de demostración segura</p>
+        </div>
+    </aside>
+
+    <!-- Pie de página con información de la tienda -->
+    <footer class="site-footer" id="informacion">
+        <div class="footer-main">
+            <div class="footer-brand">
+                <a class="brand" href="#inicio">
+                    <span class="brand-mark" aria-hidden="true">G</span>
+                    <span>GAMES<span class="brand-accent">STORM</span></span>
+                </a>
+                <p>Tu espacio para jugar, explorar<br>y subir de nivel.</p>
+            </div>
+            <div class="footer-column">
+                <h3>Explora</h3>
+                <a href="#productos">Tienda</a>
+                <a href="#productos" data-nav-category="Juegos">Videojuegos</a>
+                <a href="#productos" data-nav-category="Accesorios">Accesorios</a>
+            </div>
+            <div class="footer-column">
+                <h3>Ayuda</h3>
+                <a href="mailto:hola@gamesstorm.example">Contacto</a>
+                <a href="#informacion">Envíos y devoluciones</a>
+                <a href="#informacion">Preguntas frecuentes</a>
+            </div>
+            <div class="footer-newsletter">
+                <h3>Únete a la comunidad</h3>
+                <p>Novedades y lanzamientos para tu próximo nivel.</p>
+                <a href="mailto:hola@gamesstorm.example">hola@gamesstorm.example</a>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <span>© 2026 GamesStorm. Página de demostración.</span>
+            <span>Hecho para quienes juegan.</span>
+        </div>
+    </footer>
+</body>
+</html>
