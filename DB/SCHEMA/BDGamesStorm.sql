@@ -4,7 +4,7 @@ CREATE TABLE IF NOT EXISTS `productos` (
 	`nombre` VARCHAR(100) NOT NULL,
 	`descripcion` VARCHAR(255),
 	`precio` DECIMAL(10,2) NOT NULL,
-	`stock` INTEGER NOT NULL,
+	`stock` INTEGER NOT NULL CHECK (stock >= 0),
 	`categoria_id` INTEGER UNSIGNED NOT NULL,
 	`estado` BOOLEAN NOT NULL DEFAULT TRUE,
 	PRIMARY KEY(`id_producto`)
@@ -135,48 +135,77 @@ CREATE TABLE IF NOT EXISTS `carrito_compras` (
 
 CREATE UNIQUE INDEX `uq_carrito_usuario_producto`
 ON `carrito_compras` (`usuario_id`, `producto_id`);
-ALTER TABLE `ticket`
-ADD FOREIGN KEY(`empleado_id`) REFERENCES `personal`(`id_personal`)
-ON UPDATE NO ACTION ON DELETE NO ACTION;
-ALTER TABLE `turnos_caja`
-ADD FOREIGN KEY(`personal_id`) REFERENCES `personal`(`id_personal`)
-ON UPDATE NO ACTION ON DELETE NO ACTION;
-ALTER TABLE `ticket`
-ADD FOREIGN KEY(`caja_id`) REFERENCES `caja`(`id_caja`)
-ON UPDATE NO ACTION ON DELETE NO ACTION;
-ALTER TABLE `direcciones`
-ADD FOREIGN KEY(`usuario_id`) REFERENCES `usuarios`(`id_usuario`)
-ON UPDATE NO ACTION ON DELETE NO ACTION;
-ALTER TABLE `carrito_compras`
-ADD FOREIGN KEY(`usuario_id`) REFERENCES `usuarios`(`id_usuario`)
-ON UPDATE NO ACTION ON DELETE NO ACTION;
-ALTER TABLE `carrito_compras`
-ADD FOREIGN KEY(`producto_id`) REFERENCES `productos`(`id_producto`)
-ON UPDATE NO ACTION ON DELETE NO ACTION;
-ALTER TABLE `personal`
-ADD FOREIGN KEY(`rol_id`) REFERENCES `roles`(`id_rol`)
-ON UPDATE NO ACTION ON DELETE NO ACTION;
 ALTER TABLE `productos`
-ADD FOREIGN KEY(`categoria_id`) REFERENCES `categorias`(`id_categoria`)
-ON UPDATE NO ACTION ON DELETE NO ACTION;
+ADD CONSTRAINT `fk_productos_categoria`
+FOREIGN KEY (`categoria_id`) REFERENCES `categorias`(`id_categoria`)
+ON UPDATE CASCADE ON DELETE RESTRICT;
+
+ALTER TABLE `personal`
+ADD CONSTRAINT `fk_personal_rol`
+FOREIGN KEY (`rol_id`) REFERENCES `roles`(`id_rol`)
+ON UPDATE CASCADE ON DELETE RESTRICT;
+
+ALTER TABLE `ticket`
+ADD CONSTRAINT `fk_ticket_empleado`
+FOREIGN KEY (`empleado_id`) REFERENCES `personal`(`id_personal`)
+ON UPDATE CASCADE ON DELETE RESTRICT;
+
+ALTER TABLE `ticket`
+ADD CONSTRAINT `fk_ticket_caja`
+FOREIGN KEY (`caja_id`) REFERENCES `caja`(`id_caja`)
+ON UPDATE CASCADE ON DELETE RESTRICT;
+
+ALTER TABLE `ticket`
+ADD CONSTRAINT `fk_ticket_usuario`
+FOREIGN KEY (`usuario_id`) REFERENCES `usuarios`(`id_usuario`)
+ON UPDATE CASCADE ON DELETE SET NULL;
+
+ALTER TABLE `ticket`
+ADD CONSTRAINT `fk_ticket_direccion`
+FOREIGN KEY (`direccion_id`) REFERENCES `direcciones`(`id_direccion`)
+ON UPDATE CASCADE ON DELETE SET NULL;
+
 ALTER TABLE `detalle_ticket`
-ADD FOREIGN KEY(`ticket_id`) REFERENCES `ticket`(`id_ticket`)
-ON UPDATE NO ACTION ON DELETE NO ACTION;
+ADD CONSTRAINT `fk_detalle_ticket`
+FOREIGN KEY (`ticket_id`) REFERENCES `ticket`(`id_ticket`)
+ON UPDATE CASCADE ON DELETE CASCADE;
+
 ALTER TABLE `detalle_ticket`
-ADD FOREIGN KEY(`producto_id`) REFERENCES `productos`(`id_producto`)
-ON UPDATE NO ACTION ON DELETE NO ACTION;
+ADD CONSTRAINT `fk_detalle_producto`
+FOREIGN KEY (`producto_id`) REFERENCES `productos`(`id_producto`)
+ON UPDATE CASCADE ON DELETE RESTRICT;
+
 ALTER TABLE `turnos_caja`
-ADD FOREIGN KEY(`caja_id`) REFERENCES `caja`(`id_caja`)
-ON UPDATE NO ACTION ON DELETE NO ACTION;
-ALTER TABLE `ticket`
-ADD FOREIGN KEY(`usuario_id`) REFERENCES `usuarios`(`id_usuario`)
-ON UPDATE NO ACTION ON DELETE NO ACTION;
+ADD CONSTRAINT `fk_turnos_personal`
+FOREIGN KEY (`personal_id`) REFERENCES `personal`(`id_personal`)
+ON UPDATE CASCADE ON DELETE RESTRICT;
+
+ALTER TABLE `turnos_caja`
+ADD CONSTRAINT `fk_turnos_caja`
+FOREIGN KEY (`caja_id`) REFERENCES `caja`(`id_caja`)
+ON UPDATE CASCADE ON DELETE RESTRICT;
+
 ALTER TABLE `pago`
-ADD FOREIGN KEY(`metodo_pago_id`) REFERENCES `metodos_pago`(`id_metodo_pago`)
-ON UPDATE NO ACTION ON DELETE NO ACTION;
+ADD CONSTRAINT `fk_pago_ticket`
+FOREIGN KEY (`ticket_id`) REFERENCES `ticket`(`id_ticket`)
+ON UPDATE CASCADE ON DELETE RESTRICT;
+
 ALTER TABLE `pago`
-ADD FOREIGN KEY(`ticket_id`) REFERENCES `ticket`(`id_ticket`)
-ON UPDATE NO ACTION ON DELETE NO ACTION;
-ALTER TABLE `ticket`
-ADD FOREIGN KEY(`direccion_id`) REFERENCES `direcciones`(`id_direccion`)
-ON UPDATE NO ACTION ON DELETE NO ACTION;
+ADD CONSTRAINT `fk_pago_metodo`
+FOREIGN KEY (`metodo_pago_id`) REFERENCES `metodos_pago`(`id_metodo_pago`)
+ON UPDATE CASCADE ON DELETE RESTRICT;
+
+ALTER TABLE `direcciones`
+ADD CONSTRAINT `fk_direcciones_usuario`
+FOREIGN KEY (`usuario_id`) REFERENCES `usuarios`(`id_usuario`)
+ON UPDATE CASCADE ON DELETE CASCADE;
+
+ALTER TABLE `carrito_compras`
+ADD CONSTRAINT `fk_carrito_usuario`
+FOREIGN KEY (`usuario_id`) REFERENCES `usuarios`(`id_usuario`)
+ON UPDATE CASCADE ON DELETE CASCADE;
+
+ALTER TABLE `carrito_compras`
+ADD CONSTRAINT `fk_carrito_producto`
+FOREIGN KEY (`producto_id`) REFERENCES `productos`(`id_producto`)
+ON UPDATE CASCADE ON DELETE CASCADE;
